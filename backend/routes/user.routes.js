@@ -6,8 +6,8 @@ const router = Router();
 
 
 router.post('/register',
-    body('email').isEmail(),
-    body('password').isLength({ min: 5 }),
+    body('email').isEmail().withMessage("Please enter a valid email address"),
+    body('password').isLength({ min: 5 }).withMessage("Password is required"),
     userController.createUserController
 )
 

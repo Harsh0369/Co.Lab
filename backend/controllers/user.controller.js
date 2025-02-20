@@ -48,3 +48,5 @@ export const loginController = async (req, res) => {
     }
 
 }
+
+export const profileController = async (req, res) => { }
