@@ -17,9 +17,9 @@ router.post('/login',
     body('password').isLength({min:5}).withMessage('Password is required'),
     userController.loginController);
 
-router.get('/profile', authMiddleware.authUSer, userController.profileController);
+router.get('/profile', authMiddleware.authUser, userController.profileController);
 
-router.get('/logout', authMiddleware.authUSer, userController.logoutController);
+router.get('/logout', authMiddleware.authUser, userController.logoutController);
 
 
 export default router;
