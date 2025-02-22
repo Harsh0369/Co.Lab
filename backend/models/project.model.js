@@ -6,7 +6,7 @@ const projectSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,    
         required: true,
-        unique: true,
+        unique: [true, 'Project name already exists'],
     },
     users:[
         {
