@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/user.context";
-
+import axiosInstance from "../config/axios";
 const Home = () => {
   const { user } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -9,7 +9,14 @@ const Home = () => {
     function createProject(e)
     {
         e.preventDefault()
-        console.log({projectName })
+        axiosInstance.post("/projects/create", { name: projectName })
+        .then((res) => {
+            console.log(res)
+            setIsModalOpen(false)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
   return (
