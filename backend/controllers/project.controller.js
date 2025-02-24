@@ -26,7 +26,7 @@ export const getAllProjects = async (req, res) => {
         const loggedInUser = await userModel.findOne({ email: req.user.email });
         const userId = loggedInUser._id;
         const allProjects = await projectService.getAllProjectsByUserId(userId);
-        res.status(200).json({ projects: allProjects });
+        return res.status(200).json({ projects: allProjects });
         
     }catch (error) {
         console.log(error);
