@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 import { UserContext } from "../context/user.context";
 import axiosInstance from "../config/axios";
 const Home = () => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectName, setProjectName] = useState("");
@@ -33,7 +35,7 @@ const Home = () => {
 
   return (
     <main className="p-4">
-      <div className="projects">
+      <div className="projects flex flex-wrap gap-3">
         <button
           onClick={() => setIsModalOpen(true)}
           className="project border-solid border-2 bg-zinc-300 border-gray-400 font-semibold text-sm p-2 rounded-md gap-1 flex items-center justify-center"
@@ -45,7 +47,8 @@ const Home = () => {
         {projects.map((project) => (
           <div
             key={project._id}
-            className="project border-solid border-2 bg-zinc-300 border-gray-400 font-semibold text-sm p-2 rounded-md gap-1 flex flex-col items-center justify-center cursor-pointer"
+            onClick={() => {navigate(`/project`,{state: {project}}) }}
+            className="project border-solid border-2 bg-zinc-300 border-gray-400 font-semibold text-sm p-2 rounded-md gap-1 flex flex-col items-center justify-center cursor-pointer min-w-52 hover:bg-zinc-400"
           >
             <h2 className="font-semibold ">{project.name}</h2>
             <div className="flex items-center gap-2">

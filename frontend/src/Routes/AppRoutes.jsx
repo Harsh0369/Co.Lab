@@ -4,6 +4,7 @@ import React from 'react'
 import Login from '../Screens/Login';
 import Register from '../Screens/Register';
 import Home from '../Screens/Home';
+import Project from '../Screens/Project';
 
 const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register/>} />
         <Route path="/profile" element={<div>profile</div>} />
         <Route path="/logout" element={<div>logout</div>} />
+        <Route path="/project" element={<Project/>} />
       </Routes>
     </BrowserRouter>    
 )
