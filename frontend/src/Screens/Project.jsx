@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const Project = () => {
   const location = useLocation();
@@ -10,7 +10,10 @@ const Project = () => {
     <main className="w-screen h-screen flex">
       <section className="left h-screen w-80 bg-zinc-200 flex flex-col relative">
         <header className="bg-zinc-300 p-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Project</h1>
+          <button className="hover:bg-zinc-400 py-1 px-2 rounded-lg font-semibold flex items-center gap-1">
+            <i className="ri-add-fill"></i>
+            <p>Add Collaborators</p>
+          </button>
           <button
             onClick={() => {
               setisSidepanelOpen(!isSidepanelOpen);
@@ -23,11 +26,17 @@ const Project = () => {
         <div className="conversation-area flex-grow overflow-y-auto relative">
           <div className="messagebox flex flex-col flex-grow gap-1">
             <div className="incoming bg-zinc-100 flex flex-col m-1 rounded-lg max-w-56">
-              <small className="text-xs opacity-70 p-1">example@gmail.com</small>
-              <p className="text-sm p-1">Lorem ipsum dolor Lorem ipsum dolor sit amet.</p>
+              <small className="text-xs opacity-70 p-1">
+                example@gmail.com
+              </small>
+              <p className="text-sm p-1">
+                Lorem ipsum dolor Lorem ipsum dolor sit amet.
+              </p>
             </div>
             <div className="incoming ml-auto bg-zinc-100 flex flex-col m-2 rounded-lg max-w-56">
-              <small className="text-xs opacity-70 p-1">example@gmail.com</small>
+              <small className="text-xs opacity-70 p-1">
+                example@gmail.com
+              </small>
               <p className="text-sm p-1">Lorem ipsum dolor sit amet.</p>
             </div>
           </div>
@@ -43,8 +52,8 @@ const Project = () => {
           </button>
         </div>
         <div
-          className={`sidepanel w-80 h-screen bg-zinc-400 absolute left-0 top-0 transition-transform transform ${
-            isSidepanelOpen ? 'translate-x-0' : '-translate-x-full'
+          className={`sidepanel w-80 h-screen bg-zinc-200 absolute left-0 top-0 transition-transform transform ${
+            isSidepanelOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <header className="bg-zinc-300 p-4 flex items-center justify-between">
@@ -59,6 +68,14 @@ const Project = () => {
             </button>
           </header>
           {/* Sidepanel content goes here */}
+          <div className="users flex flex-col gap-2 p-4">
+            <div className="user flex items-center gap-1 hover:bg-zinc-300 p-1 rounded-lg cursor-pointer">
+              <div className="aspect-square rounded-full px-4 py-3 bg-gray-600">
+                <i className="ri-user-fill text-zinc-100 text-xl"></i>
+              </div>
+              <h1 className="text-lg font-semibold">@username</h1>
+            </div>
+          </div>
         </div>
       </section>
       <section className="right h-screen w-4/5 bg-zinc-100 p-4 overflow-y-auto">
