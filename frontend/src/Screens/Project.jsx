@@ -5,12 +5,26 @@ const Project = () => {
   const location = useLocation();
   console.log(location.state);
   const [isSidepanelOpen, setisSidepanelOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [users, setUsers] = useState([
+    { id: 1, username: "user1" },
+    { id: 2, username: "user2" },
+    { id: 3, username: "user3" },
+  ]);
+
+  const addUserToProject = (user) => {
+    console.log(`Adding ${user.username} to the project`);
+    // Add user to the project logic here
+  };
 
   return (
     <main className="w-screen h-screen flex">
       <section className="left h-screen w-80 bg-zinc-200 flex flex-col relative">
         <header className="bg-zinc-300 p-4 flex items-center justify-between">
-          <button className="hover:bg-zinc-400 py-1 px-2 rounded-lg font-semibold flex items-center gap-1">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="hover:bg-zinc-400 py-1 px-2 rounded-lg font-semibold flex items-center gap-1"
+          >
             <i className="ri-add-fill"></i>
             <p>Add Collaborators</p>
           </button>
@@ -78,9 +92,40 @@ const Project = () => {
           </div>
         </div>
       </section>
+
       <section className="right h-screen w-4/5 bg-zinc-100 p-4 overflow-y-auto">
         {/* Add the main content of the project here */}
       </section>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-zinc-200 p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-2xl font-bold text-zinc-800 mb-4">
+              Add Collaborators
+            </h2>
+            <ul className="mb-4">
+              {users.map((user) => (
+                <li
+                  key={user.id}
+                  className="flex items-center justify-between p-2 hover:bg-zinc-300 rounded-lg cursor-pointer"
+                  onClick={() => addUserToProject(user)}
+                >
+                  <span className="text-zinc-800">{user.username}</span>
+                  <button className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
+                    Add
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 };
