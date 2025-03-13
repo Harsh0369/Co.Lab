@@ -39,7 +39,7 @@ const Project = () => {
 
  function addCollaborators() {
    axiosInstance
-     .put("/projects/add-user", {
+     .put("/projects/add-users", {
        projectId: location.state.project._id,
        users: Array.from(selectedUserId),
      })

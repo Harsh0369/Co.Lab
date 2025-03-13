@@ -1,4 +1,6 @@
 import projectModel from "../models/project.model.js";
+import mongoose from "mongoose";
+
 
 export const createProject = async ({ name, userId }) => {
   if (!name) {
@@ -33,50 +35,63 @@ export const getAllProjectsByUserId = async (userId) => {
     return allProjects
 }
  
-export const addUsersToProject = async ({ projectId, users,userId }) => { 
-  if(!projectId) {
-    throw new Error("Project Id is required");
+export const addUsersToProject = async ({ projectId, users, userId }) => {
+  if (!projectId) {
+    throw new Error("projectId is required");
   }
-  if(!mongoose.Types.ObjectId.isValid(projectId)) {
-    throw new Error("Invalid Project Id");
+
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
+    throw new Error("Invalid projectId");
   }
-  if(!users || users.length === 0) {
-    throw new Error("Users are required");
+
+  if (!users) {
+    throw new Error("users are required");
   }
-  if(!Array.isArray(users) || users.some(user => !mongoose.Types.ObjectId.isValid(user))) {
-    throw new Error("Users should be an array of valid user ids");
+
+  if (
+    !Array.isArray(users) ||
+    users.some((userId) => !mongoose.Types.ObjectId.isValid(userId))
+  ) {
+    throw new Error("Invalid userId(s) in users array");
   }
-  if(!userId) {
-    throw new Error("User is required");
+
+  if (!userId) {
+    throw new Error("userId is required");
   }
-  if(!mongoose.Types.ObjectId.isValid(userId)) {
-    throw new Error("Invalid User Id");
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("Invalid userId");
   }
+
   const project = await projectModel.findOne({
     _id: projectId,
-    users: userId
+    users: userId,
   });
-  if(!project) {
-    throw new Error("Project not found");
+
+  console.log(project);
+
+  if (!project) {
+    throw new Error("User not belong to this project");
   }
-  const updatedProject = await projectModel.findOneAndUpdate
-  (
+
+  const updatedProject = await projectModel.findOneAndUpdate(
     {
-      _id: projectId
+      _id: projectId,
     },
     {
       $addToSet: {
         users: {
-          $each: users
-        }
-      }
+          $each: users,
+        },
+      },
     },
     {
-      new: true
+      new: true,
     }
   );
 
-}
+  return updatedProject;
+};
 
 export const getProjectById = async ({projectId}) => { 
   if(!projectId) {
