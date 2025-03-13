@@ -1,21 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import axiosInstance from "../config/axios"; // Import the Axios instance
 
 const Project = () => {
   const location = useLocation();
   console.log(location.state);
   const [isSidepanelOpen, setisSidepanelOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [users, setUsers] = useState([
-    { id: 1, username: "user1" },
-    { id: 2, username: "user2" },
-    { id: 3, username: "user3" },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
 
-  const addUserToProject = (user) => {
-    console.log(`Adding ${user.username} to the project`);
-    // Add user to the project logic here
-  };
+  useEffect(() => {
+    // Fetch all users from the backend
+    axiosInstance
+      .get("/users/all")
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the users!", error);
+      });
+  }, []);
+
+    const handleUserClick = (id) => {
+        setSelectedUserId(prevSelectedUserId => {
+            const newSelectedUserId = new Set(prevSelectedUserId);
+            if (newSelectedUserId.has(id)) {
+                newSelectedUserId.delete(id);
+            } else {
+                newSelectedUserId.add(id);
+            }
+
+            return newSelectedUserId;
+        });
+
+
+    }
+
+ function addCollaborators() {
+   axiosInstance
+     .put("/projects/add-user", {
+       projectId: location.state.project._id,
+       users: Array.from(selectedUserId),
+     })
+     .then((res) => {
+       console.log(res.data);
+       setIsModalOpen(false);
+     })
+     .catch((err) => {
+       console.log(err);
+     });
+ }
 
   return (
     <main className="w-screen h-screen flex">
@@ -94,38 +129,36 @@ const Project = () => {
       </section>
 
       <section className="right h-screen w-4/5 bg-zinc-100 p-4 overflow-y-auto">
-        {/* Add the main content of the project here */}
       </section>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-zinc-200 p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-2xl font-bold text-zinc-800 mb-4">
-              Add Collaborators
-            </h2>
-            <ul className="mb-4">
-              {users.map((user) => (
-                <li
-                  key={user.id}
-                  className="flex items-center justify-between p-2 hover:bg-zinc-300 rounded-lg cursor-pointer"
-                  onClick={() => addUserToProject(user)}
-                >
-                  <span className="text-zinc-800">{user.username}</span>
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600">
-                    Add
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+                 {isModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-zinc-200 p-4 rounded-md w-96 max-w-full relative">
+                        <header className='flex justify-between items-center mb-4'>
+                            <h2 className='text-xl font-semibold'>Select User</h2>
+                            <button onClick={() => setIsModalOpen(false)} className='p-2'>
+                                <i className="ri-close-fill"></i>
+                            </button>
+                        </header>
+                        <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
+                            {users.map(user => (
+                                <div key={user.id} className={`user cursor-pointer rounded-md hover:bg-zinc-300 ${Array.from(selectedUserId).indexOf(user._id) != -1 ? 'bg-slate-200' : ""} p-2 flex gap-2 items-center`} onClick={() => handleUserClick(user._id)}>
+                                    <div className='aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600'>
+                                        <i className="ri-user-fill absolute"></i>
+                                    </div>
+                                    <h1 className='font-semibold text-lg'>{user.email}</h1>
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            onClick={addCollaborators}
+                            className='absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 text-white rounded-md'>
+                            Add Collaborators
+                        </button>
+                    </div>
+                </div>
+            )}
+
     </main>
   );
 };
