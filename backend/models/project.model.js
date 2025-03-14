@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './user.model.js';
 
 const projectSchema = new mongoose.Schema({
     name: {
@@ -11,7 +12,7 @@ const projectSchema = new mongoose.Schema({
     users:[
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
+            ref: 'user',
             required: true
         }
     ]

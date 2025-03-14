@@ -7,11 +7,26 @@ const Project = () => {
   console.log(location.state);
   const [isSidepanelOpen, setisSidepanelOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [project, setProject] = useState(location.state?.project || {});
+
   const [users, setUsers] = useState([]);
   const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
 
   useEffect(() => {
     // Fetch all users from the backend
+
+    axiosInstance
+      .get(`/projects/get-project/${location.state.project._id}`)
+      .then((res) => {
+        console.log(res.data);
+        console.log(res.data.project);
+        setProject(res.data.project); // Ensure state is updated correctly
+      })
+      .catch((error) => {
+        console.error("Error fetching project:", error);
+      });
+
+
     axiosInstance
       .get("/users/all")
       .then((response) => {
@@ -21,6 +36,8 @@ const Project = () => {
         console.error("There was an error fetching the users!", error);
       });
   }, []);
+
+  
 
     const handleUserClick = (id) => {
         setSelectedUserId(prevSelectedUserId => {
@@ -106,24 +123,28 @@ const Project = () => {
           }`}
         >
           <header className="bg-zinc-300 p-4 flex items-center justify-between">
-            <h1 className="text-xl font-semibold">Sidepanel</h1>
+            <h1 className="text-xl font-semibold">Collaborators</h1>
             <button
               onClick={() => {
                 setisSidepanelOpen(false);
               }}
               className="hover:text-zinc-100 hover:bg-zinc-300 p-1 rounded-full "
             >
-              <i className="ri-close-fill"></i>
+              <i className="ri-close-fill text-xl"></i>
             </button>
           </header>
           {/* Sidepanel content goes here */}
-          <div className="users flex flex-col gap-2 p-4">
-            <div className="user flex items-center gap-1 hover:bg-zinc-300 p-1 rounded-lg cursor-pointer">
-              <div className="aspect-square rounded-full px-4 py-3 bg-gray-600">
+          <div className="users flex flex-col gap-2 p-1">
+          {project?.users && project.users.map(user => {
+            return (
+            <div className="user flex items-center gap-1.5 hover:bg-zinc-300 p-2 rounded-lg cursor-pointer">
+              <div className="aspect-square rounded-full px-3 py-2 bg-gray-600">
                 <i className="ri-user-fill text-zinc-100 text-xl"></i>
               </div>
-              <h1 className="text-lg font-semibold">@username</h1>
+              <h1 className="text-md font-semibold">{user.email}</h1>
             </div>
+)
+          })}
           </div>
         </div>
       </section>
@@ -142,11 +163,14 @@ const Project = () => {
                         </header>
                         <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
                             {users.map(user => (
-                                <div key={user.id} className={`user cursor-pointer rounded-md hover:bg-zinc-300 ${Array.from(selectedUserId).indexOf(user._id) != -1 ? 'bg-slate-200' : ""} p-2 flex gap-2 items-center`} onClick={() => handleUserClick(user._id)}>
+                                <div key={user.id} className={`user cursor-pointer rounded-md hover:bg-zinc-300 ${Array.from(selectedUserId).indexOf(user._id) != -1 ? 'bg-slate-200' : ""} p-2 flex flex-w gap-2 items-center`} onClick={() => handleUserClick(user._id)}>
                                     <div className='aspect-square relative rounded-full w-fit h-fit flex items-center justify-center p-5 text-white bg-slate-600'>
                                         <i className="ri-user-fill absolute"></i>
-                                    </div>
-                                    <h1 className='font-semibold text-lg'>{user.email}</h1>
+                                </div>
+                                <div>
+                                  
+                                    <h1 className='font-semibold text-lg w-full'>{user.email}</h1>
+                                </div>
                                 </div>
                             ))}
                         </div>
