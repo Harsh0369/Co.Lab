@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
+import { initializeSocket,sendMessage,recieveMessage } from "../config/socket";
 
 const Project = () => {
   const location = useLocation();
@@ -14,6 +15,8 @@ const Project = () => {
 
   useEffect(() => {
     // Fetch all users from the backend
+
+    initializeSocket();
 
     axiosInstance
       .get(`/projects/get-project/${location.state.project._id}`)
