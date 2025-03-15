@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/user.context";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
 import { initializeSocket,sendMessage,recieveMessage } from "../config/socket";
 
 const Project = () => {
   const location = useLocation();
-  console.log(location.state);
   const [isSidepanelOpen, setisSidepanelOpen] = useState(false);
+  const { user } = useContext(UserContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [project, setProject] = useState(location.state?.project || {});
+  const [message, setMessage] = useState("");
 
   const [users, setUsers] = useState([]);
   const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
@@ -16,7 +18,11 @@ const Project = () => {
   useEffect(() => {
     // Fetch all users from the backend
 
-    initializeSocket();
+    initializeSocket(project._id);
+
+    recieveMessage("project-message", (data) => {
+      console.log(data);
+    });
 
     axiosInstance
       .get(`/projects/get-project/${location.state.project._id}`)
@@ -70,7 +76,16 @@ const Project = () => {
      .catch((err) => {
        console.log(err);
      });
- }
+  }
+  
+  function send() {
+    sendMessage("project-message", {
+      message,
+      sender: user._id,
+    });
+
+    setMessage("");
+  }
 
   return (
     <main className="w-screen h-screen flex">
@@ -113,10 +128,12 @@ const Project = () => {
         <div className="inputarea w-full flex h-14 bg-zinc-300 p-2">
           <input
             type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="Type a message..."
             className="w-full p-2 text-zinc-800 bg-zinc-300 focus:outline-none"
           />
-          <button className="bg-zinc-300 px-3 rounded-lg hover:bg-zinc-400">
+          <button onClick={send} className="bg-zinc-300 px-3 rounded-lg hover:bg-zinc-400">
             <i className="ri-send-plane-fill"></i>
           </button>
         </div>
