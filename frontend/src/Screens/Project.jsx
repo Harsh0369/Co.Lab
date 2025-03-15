@@ -20,7 +20,7 @@ const Project = () => {
 
     initializeSocket(project._id);
 
-    recieveMessage("project-message", (data) => {
+    recieveMessage("project-message", data => {
       console.log(data);
     });
 
@@ -78,7 +78,7 @@ const Project = () => {
      });
   }
   
-  function send() {
+  const send=()=> {
     sendMessage("project-message", {
       message,
       sender: user._id,

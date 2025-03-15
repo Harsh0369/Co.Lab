@@ -1,41 +1,33 @@
-import React from 'react'
-import { useState,useEffect,useContext } from 'react';
-import { UserContext } from '../context/user.context'
-import { useNavigate } from 'react-router-dom';
-
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/user.context";
 
 const UserAuth = ({ children }) => {
-    const { user } = useContext(UserContext);
-    const [loading, setLoading] = useState(true);
-    const token = localStorage.getItem('token');
-    const navigate = useNavigate();
-
-    if (loading) {
-        <div>loading...</div>
-    }
-
-   
+  const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
     useEffect(() => {
+      console.log(user)
+    if (user) {
+      setLoading(false);
+    }
 
- if (user) {
-   setLoading(false);
- }
+    if (!token) {
+      navigate("/login");
+    }
 
-        if (!token) {
-          navigate("/login");
-        }
+    if (!user) {
+      navigate("/login");
+    }
+  }, []);
 
-        if (!user) {
-          navigate("/login");
-        }
-     },[])
-    
-  return (
-      <>
-            {children}
-      </>
-  )
-}
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-export default UserAuth
+  return <>{children}</>;
+};
+
+export default UserAuth;

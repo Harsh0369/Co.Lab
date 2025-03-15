@@ -47,7 +47,13 @@ io.use(async (socket, next) => {
 
 io.on("connection", (socket) => {
     console.log("Client connected");
-    socket.join(socket.project._id)
+  socket.join(socket.project._id);
+
+
+  socket.on("project-message", data => {
+    console.log(data);
+    socket.broadcast.to(socket.project._id).emit("project-message", data);
+  });
   socket.on("event", (data) => {
     /* … */
   });
@@ -55,9 +61,7 @@ io.on("connection", (socket) => {
     /* … */
   });
 
-  socket.on("project-message", data => {
-    socket.broadcast.to(socket.project._id).emit("project-message", data);  
-  })
+  
 
 });
 
