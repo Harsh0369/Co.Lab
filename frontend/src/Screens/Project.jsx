@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, use } from "react";
 import { UserContext } from "../context/user.context";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
@@ -11,6 +11,7 @@ const Project = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [project, setProject] = useState(location.state?.project || {});
   const [message, setMessage] = useState("");
+  const messageBox = React.createRef();
 
   const [users, setUsers] = useState([]);
   const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
@@ -22,6 +23,7 @@ const Project = () => {
 
     recieveMessage("project-message", data => {
       console.log(data);
+      appendIncomingMessage(data);
     });
 
     axiosInstance
@@ -46,7 +48,21 @@ const Project = () => {
       });
   }, []);
 
-  
+  function appendIncomingMessage(messageObject) {
+    const messageBox = document.querySelector(".messagebox");
+
+    const message = document.createElement("div");
+    message.classList.add("incoming", "bg-zinc-100", "flex", "flex-col", "m-1", "rounded-lg", "max-w-56");
+    const sender = messageObject.sender;
+    console.log(sender.email);
+    message.innerHTML = `
+      <small class="text-xs opacity-70 p-1">${messageObject.sender}</small>
+      <p class="text-sm p-1">${messageObject.message}</p>
+    `;
+    messageBox.appendChild(message);
+  }
+
+    
 
     const handleUserClick = (id) => {
         setSelectedUserId(prevSelectedUserId => {
@@ -81,7 +97,7 @@ const Project = () => {
   const send=()=> {
     sendMessage("project-message", {
       message,
-      sender: user._id,
+      sender: user.email,
     });
 
     setMessage("");
@@ -108,7 +124,9 @@ const Project = () => {
           </button>
         </header>
         <div className="conversation-area flex-grow overflow-y-auto relative">
-          <div className="messagebox flex flex-col flex-grow gap-1">
+          <div
+            ref={messageBox}
+            className="messagebox flex flex-col flex-grow gap-1">
             <div className="incoming bg-zinc-100 flex flex-col m-1 rounded-lg max-w-56">
               <small className="text-xs opacity-70 p-1">
                 example@gmail.com
