@@ -41,7 +41,7 @@ const Project = () => {
     axiosInstance
       .get("/users/all")
       .then((response) => {
-        setUsers(response.data);
+        setUsers(response.data.users);
       })
       .catch((error) => {
         console.error("There was an error fetching the users!", error);
@@ -53,12 +53,15 @@ const Project = () => {
 
     const message = document.createElement("div");
     message.classList.add("incoming", "bg-zinc-100", "flex", "flex-col", "m-1", "rounded-lg", "max-w-56");
-    const sender = messageObject.sender;
-    console.log(sender.email);
+    const senderEmail = messageObject.sender.email;
+    console.log(messageObject.sender._id);
+    console.log(senderEmail);
+    console.log(typeof senderEmail);
     message.innerHTML = `
-      <small class="text-xs opacity-70 p-1">${messageObject.sender}</small>
-      <p class="text-sm p-1">${messageObject.message}</p>
-    `;
+  <small class="text-xs opacity-70 p-1">${String(messageObject.sender._id)}</small>
+  <p class="text-sm p-1">${String(messageObject.message)}</p>
+`;
+
     messageBox.appendChild(message);
   }
 
@@ -67,12 +70,13 @@ const Project = () => {
 
     const message = document.createElement("div");
     message.classList.add("incoming","ml-auto", "bg-zinc-100", "flex", "flex-col", "m-1", "rounded-lg", "max-w-56");
-    const sender = messageObject.sender;
-    console.log(sender.email);
+    const senderEmail = messageObject.sender.email;
+    console.log(senderEmail);
     message.innerHTML = `
-      <small class="text-xs opacity-70 p-1">${messageObject.sender}</small>
-      <p class="text-sm p-1">${messageObject.message}</p>
-    `;
+  <small class="text-xs opacity-70 p-1">${String(senderEmail)}</small>
+  <p class="text-sm p-1">${String(messageObject.message)}</p>
+`;
+
     messageBox.appendChild(message);
   }
     
@@ -110,7 +114,7 @@ const Project = () => {
   const send=()=> {
     sendMessage("project-message", {
       message,
-      sender: user.email,
+      sender: user,
     });
 
     appendOutgoingMessage(message)
