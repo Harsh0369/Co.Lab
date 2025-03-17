@@ -62,6 +62,19 @@ const Project = () => {
     messageBox.appendChild(message);
   }
 
+  function appendOutgoingMessage(messageObject) {
+    const messageBox = document.querySelector(".messagebox");
+
+    const message = document.createElement("div");
+    message.classList.add("incoming","ml-auto", "bg-zinc-100", "flex", "flex-col", "m-1", "rounded-lg", "max-w-56");
+    const sender = messageObject.sender;
+    console.log(sender.email);
+    message.innerHTML = `
+      <small class="text-xs opacity-70 p-1">${messageObject.sender}</small>
+      <p class="text-sm p-1">${messageObject.message}</p>
+    `;
+    messageBox.appendChild(message);
+  }
     
 
     const handleUserClick = (id) => {
@@ -99,6 +112,8 @@ const Project = () => {
       message,
       sender: user.email,
     });
+
+    appendOutgoingMessage(message)
 
     setMessage("");
   }
