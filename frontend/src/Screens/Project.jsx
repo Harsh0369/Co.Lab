@@ -18,7 +18,16 @@ const Project = () => {
 
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState(new Set()) 
-  
+
+  const [fileTree, setFileTree] = useState({});
+
+  const [currentFile, setCurrentFile] = useState(null);
+  const [openFiles, setOpenFiles] = useState([]);
+
+  const [webContainer, setWebContainer] = useState(null);
+  const [iframeUrl, setIframeUrl] = useState(null);
+
+  const [runProcess, setRunProcess] = useState(null);
 
 
   function SyntaxHighlightedCode(props) {
@@ -225,7 +234,20 @@ const Project = () => {
         </div>
       </section>
 
-      <section className="right h-screen w-4/5 bg-zinc-100 p-4 overflow-y-auto"></section>
+      <section className="right h-screen w-4/5 bg-zinc-100 flex-grow flex overflow-y-auto">
+        <div className="explorer w-72 h-full px-1 py-2 bg-zinc-400">
+          <div className="filetree ">
+            <div className="file-element flex items-center gap-2 p-1 bg-zinc-300 rounded-sm">
+              <p className="font-semibold cursor-pointer p-2 text-sm">
+                app.js
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="code-editor">
+          
+        </div>
+      </section>
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
