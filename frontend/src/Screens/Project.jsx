@@ -70,7 +70,7 @@ const Project = () => {
     axiosInstance
       .get("/users/all")
       .then((response) => {
-        setUsers(response.data.users);
+        setUsers(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the users!", error);
