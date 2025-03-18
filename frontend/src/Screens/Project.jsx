@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
 import { initializeSocket, sendMessage, recieveMessage } from "../config/socket";
 import Markdown from "markdown-to-jsx"; // Import the markdown-to-jsx library
+import { getWebContainer } from "../config/webContainer";
+import hljs from "highlight.js";
 
 
 const Project = () => {
@@ -81,6 +83,20 @@ const Project = () => {
         console.error("There was an error fetching the users!", error);
       });
   }, []);
+
+  function saveFileTree(ft) {
+    axios
+      .put("/projects/update-file-tree", {
+        projectId: project._id,
+        fileTree: ft,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
     
 
