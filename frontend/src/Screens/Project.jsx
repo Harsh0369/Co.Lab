@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext, use } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../context/user.context";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
 import { initializeSocket, sendMessage, recieveMessage } from "../config/socket";
-import {Markdown} from "markdown-to-jsx";
+import Markdown from "markdown-to-jsx"; // Import the markdown-to-jsx library
 
 
 const Project = () => {
@@ -17,7 +17,24 @@ const Project = () => {
   const messageBox = React.createRef();
 
   const [users, setUsers] = useState([]);
-  const [ selectedUserId, setSelectedUserId ] = useState(new Set()) 
+  const [selectedUserId, setSelectedUserId] = useState(new Set()) 
+  
+
+
+  function SyntaxHighlightedCode(props) {
+    const ref = useRef(null);
+
+    React.useEffect(() => {
+      if (ref.current && props.className?.includes("lang-") && window.hljs) {
+        window.hljs.highlightElement(ref.current);
+
+        // hljs won't reprocess the element unless this attribute is removed
+        ref.current.removeAttribute("data-highlighted");
+      }
+    }, [props.className, props.children]);
+
+    return <code {...props} ref={ref} />;
+  }
 
   useEffect(() => {
     // Fetch all users from the backend
@@ -26,6 +43,7 @@ const Project = () => {
 
     recieveMessage("project-message", data => {
       setMessages((prevMessages) => [...prevMessages, data]);
+      console.log(data);
     });
 
     axiosInstance
@@ -88,8 +106,30 @@ const Project = () => {
       sender: user,
     });
     setMessages((prevMessages) => [...prevMessages, { sender: user, message }]); // Update messages state
+    console.log(messages);
     setMessage("");
   };
+
+
+  function WriteAiMessage(message) {
+    console.log("AI message:", message)
+
+        const messageObject = JSON.parse(message)
+
+        return (
+            <div
+                className='overflow-auto bg-slate-950 text-white rounded-sm p-2'
+            >
+                <Markdown
+                    children={messageObject.text}
+                    options={{
+                        overrides: {
+                            code: SyntaxHighlightedCode,
+                        },
+                    }}
+                />
+            </div>)
+    }
 
   return (
     <main className="w-screen h-screen flex">
