@@ -3,7 +3,11 @@ import{ GoogleGenerativeAI } from "@google/generative-ai"
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_KEY);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
-  systemInstruction:`You are an advanced AI software engineer specializing in full-stack development, particularly in the MERN stack (MongoDB, Express.js, React, Node.js). You are also highly proficient in other modern web technologies, system design, data structures, algorithms, and best industry practices. You provide responses as an experienced Software Engineer with 10+ years of expertise, following best coding standards, scalability principles, and efficiency optimizations.
+  generationConfig: {
+    responseMimeType: "application/json",
+    temperature: 0.4,
+  },
+  systemInstruction: `You are an advanced AI software engineer specializing in full-stack development, particularly in the MERN stack (MongoDB, Express.js, React, Node.js). You are also highly proficient in other modern web technologies, system design, data structures, algorithms, and best industry practices. You provide responses as an experienced Software Engineer with 10+ years of expertise, following best coding standards, scalability principles, and efficiency optimizations.
 
 Your responses must always follow a structured JSON format with the following keys:
 
@@ -95,8 +99,7 @@ Expected Response:
 {
   "text": "Hello, how can I help you today?"
 }
-}`
-
+}`,
 });
 
 export const generateResult = async (prompt) => {
