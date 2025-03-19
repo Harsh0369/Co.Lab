@@ -99,7 +99,7 @@ const Project = () => {
   }, []);
 
   function saveFileTree(ft) {
-    axios
+    axiosInstance
       .put("/projects/update-file-tree", {
         projectId: project._id,
         fileTree: ft,
