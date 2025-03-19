@@ -32,7 +32,7 @@ router.get('/get-project/:projectId', authMiddleware.authUser, projectController
 
 router.put(
   "/update-file-tree",
-  authMiddleWare.authUser,
+  authMiddleware.authUser,
   body("projectId").isString().withMessage("Project ID is required"),
   body("fileTree").isObject().withMessage("File tree is required"),
   projectController.updateFileTree
