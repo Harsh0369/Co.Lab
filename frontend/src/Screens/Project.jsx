@@ -56,6 +56,13 @@ const Project = () => {
 
     initializeSocket(project._id);
 
+     if (!webContainer) {
+       getWebContainer().then((container) => {
+         setWebContainer(container);
+         console.log("container started");
+       });
+     }
+
     receiveMessage("project-message", (data) => {
       console.log(data);
 
@@ -306,6 +313,7 @@ const Project = () => {
             <div className="actions flex gap-2">
               <button
                 onClick={async () => {
+                  console.log(fileTree)
                   await webContainer.mount(fileTree);
 
                   const installProcess = await webContainer.spawn("npm", [
