@@ -2,7 +2,11 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../context/user.context";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../config/axios"; // Import the Axios instance
-import { initializeSocket, sendMessage, recieveMessage } from "../config/socket";
+import {
+  initializeSocket,
+  sendMessage,
+  receiveMessage,
+} from "../config/socket";
 import Markdown from "markdown-to-jsx"; // Import the markdown-to-jsx library
 import { getWebContainer } from "../config/webContainer";
 import hljs from "highlight.js";
