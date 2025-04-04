@@ -49,8 +49,12 @@ const Home = () => {
       {/* Main Content */}
       <div className="flex-1 p-6 bg-gray-100 bg-cover bg-center bg-no-repeat bg-[url('/public/background.png')] h-screen flex flex-col">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">
-            Welcome, {user?.name || "User"} 👋
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-700 to-pink-800 text-transparent bg-clip-text">
+            Welcome,{" "}
+            {user?.email
+              ? user.email.split("@")[0].charAt(0).toUpperCase() +
+                user.email.split("@")[0].slice(1)
+              : "User"}
           </h1>
         </div>
 
