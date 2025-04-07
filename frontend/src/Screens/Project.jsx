@@ -119,8 +119,6 @@ const Project = () => {
       });
   }
 
-    
-
     const handleUserClick = (id) => {
         setSelectedUserId(prevSelectedUserId => {
             const newSelectedUserId = new Set(prevSelectedUserId);
@@ -166,7 +164,7 @@ const Project = () => {
     console.log("AI message:", message)
 
         const messageObject = JSON.parse(message)
-
+        
         return (
             <div
                 className='overflow-auto bg-slate-950 text-white rounded-sm p-2'
@@ -183,12 +181,12 @@ const Project = () => {
     }
 
   return (
-    <main className="w-screen h-screen flex">
-      <section className="left h-screen w-80 bg-zinc-200 flex flex-col relative">
-        <header className="bg-zinc-300 p-4 flex items-center justify-between">
+    <main className="flex min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 p-1 gap-4 text-white">
+      <section className="flex flex-col bg-gray-700 rounded-2xl p-4 my-3 mx-2 w-[25%] max-w-[300px]">
+        <header className="bg-zinc-500 p-2 px-3 rounded-xl flex items-center justify-between">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="hover:bg-zinc-400 py-1 px-2 rounded-lg font-semibold flex items-center gap-1"
+            className="hover:bg-zinc-400 py-1 px-2 pr-2 rounded-lg font-poppins font-semibold flex items-center gap-1"
           >
             <i className="ri-add-fill"></i>
             <p>Add Collaborators</p>
@@ -197,7 +195,7 @@ const Project = () => {
             onClick={() => {
               setisSidepanelOpen(!isSidepanelOpen);
             }}
-            className="hover:text-zinc-100"
+            className="hover:text-zinc-900"
           >
             <i className="ri-group-fill"></i>
           </button>
@@ -214,7 +212,7 @@ const Project = () => {
                   msg.sender._id === "ai" ? "max-w-80" : "max-w-52"
                 } ${
                   msg.sender._id == user._id.toString() && "ml-auto"
-                }  message flex flex-col p-2 bg-slate-50 w-fit rounded-md`}
+                }  message flex flex-col p-2 bg-slate-900 w-fit rounded-md`}
               >
                 <small className="opacity-65 text-xs">{msg.sender.email}</small>
                 <div className="text-sm">
@@ -228,28 +226,28 @@ const Project = () => {
             ))}
           </div>
         </div>
-        <div className="inputarea w-full flex h-14 bg-zinc-300 p-2">
+        <div className="inputarea w-full flex h-14 bg-zinc-500 rounded-xl p-2">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            className="w-full p-2 text-black bg-zinc-500 focus:outline-none"
             placeholder="Type a message..."
-            className="w-full p-2 text-zinc-800 bg-zinc-300 focus:outline-none"
           />
           <button
             onClick={send}
-            className="bg-zinc-300 px-3 rounded-lg hover:bg-zinc-400"
+            className="bg-zinc-900 px-3 rounded-lg hover:bg-zinc-400"
           >
             <i className="ri-send-plane-fill"></i>
           </button>
         </div>
         <div
-          className={`sidepanel w-80 h-screen bg-zinc-200 absolute left-0 top-0 transition-transform transform ${
+          className={`sidepanel w-70 h-screen bg-zinc-400 absolute left-0 top-0 transition-transform transform ${
             isSidepanelOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <header className="bg-zinc-300 p-4 flex items-center justify-between">
-            <h1 className="text-xl font-semibold">Collaborators</h1>
+          <header className="bg-zinc-800 p-4 flex items-center justify-between">
+            <h1 className="text-xl font-poppins font-semibold">Collaborators</h1>
             <button
               onClick={() => {
                 setisSidepanelOpen(false);
@@ -266,9 +264,9 @@ const Project = () => {
                 return (
                   <div className="user flex items-center gap-1.5 hover:bg-zinc-300 p-2 rounded-lg cursor-pointer">
                     <div className="aspect-square rounded-full px-3 py-2 bg-gray-600">
-                      <i className="ri-user-fill text-zinc-100 text-xl"></i>
+                      <i className="ri-user-fill text-zinc-900 text-xl"></i>
                     </div>
-                    <h1 className="text-md font-semibold">{user.email}</h1>
+                    <h1 className="text-md text-gray-900 font-poppins font-medium">{user.email}</h1>
                   </div>
                 );
               })}
@@ -276,8 +274,8 @@ const Project = () => {
         </div>
       </section>
 
-      <section className="right h-screen w-4/5 bg-zinc-100 flex-grow flex overflow-y-auto">
-        <div className="explorer h-full max-w-64 min-w-52 bg-slate-200">
+      <section className="flex-1 flex m-2 bg-gray-800 rounded-2xl overflow-hidden">
+        <div className="explorer h-full max-w-40 min-w-20 bg-slate-900 bg-opacity-20">
           <div className="file-tree w-full">
             {Object.keys(fileTree).map((file, index) => (
               <button
@@ -286,7 +284,7 @@ const Project = () => {
                   setCurrentFile(file);
                   setOpenFiles([...new Set([...openFiles, file])]);
                 }}
-                className="tree-element cursor-pointer p-2 px-4 flex items-center gap-2 bg-slate-300 w-full"
+                className="tree-element cursor-pointer p-2 px-4 flex items-center gap-2 bg-slate-900 w-full"
               >
                 <p className="font-semibold text-lg">{file}</p>
               </button>
@@ -295,17 +293,18 @@ const Project = () => {
         </div>
 
         <div className="code-editor flex flex-col flex-grow h-full shrink">
-          <div className="top flex justify-between w-full">
+          <div className="top flex justify-between bg-gray-500 px-2 py-0 w-full">
+          <h1 className="text-base font-poppins p-2 font-bold">Code Editor</h1>
             <div className="files flex">
               {openFiles.map((file, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentFile(file)}
-                  className={`open-file cursor-pointer p-2 px-4 flex items-center w-fit gap-2 bg-slate-300 ${
-                    currentFile === file ? "bg-slate-400" : ""
+                  className={`open-file cursor-pointer mt-2 px-4 pb-1 flex items-center rounded-full h-6 w-fit gap-2 bg-slate-300 ${
+                    currentFile === file ? "bg-zinc-800" : ""
                   }`}
                 >
-                  <p className="font-semibold text-lg">{file}</p>
+                  <p className="font-semibold text-base">{file}</p>
                 </button>
               ))}
             </div>
@@ -351,15 +350,16 @@ const Project = () => {
                     setIframeUrl(url);
                   });
                 }}
-                className="p-2 px-4 bg-slate-300 text-white"
+                className="bg-green-500 font-poppins hover:bg-green-600 text-gray-100 text-base px-5 py-1 rounded-3xl m-1  transition-all"
               >
                 run
               </button>
             </div>
           </div>
-          <div className="bottom flex flex-grow max-w-full shrink overflow-auto">
+          <div className="bottom flex flex-grow max-w-full shrink overflow-auto"
+          style={{ backgroundImage: "url('/background.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}> 
             {fileTree[currentFile] && (
-              <div className="code-editor-area h-full overflow-auto flex-grow bg-slate-50">
+              <div className="code-editor-area h-full overflow-auto flex-grow bg-slate-9000">
                 <pre className="hljs h-full">
                   <code
                     className="hljs h-full outline-none"
@@ -415,9 +415,9 @@ const Project = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-zinc-200 p-4 rounded-md w-96 max-w-full relative">
             <header className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Select User</h2>
+              <h2 className="text-xl text-black font-semibold font-poppins">Select User</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2">
-                <i className="ri-close-fill"></i>
+                <i className="ri-close-fill text-black font-semibold"></i>
               </button>
             </header>
             <div className="users-list flex flex-col gap-2 mb-16 max-h-96 overflow-auto">
@@ -435,7 +435,7 @@ const Project = () => {
                     <i className="ri-user-fill absolute"></i>
                   </div>
                   <div>
-                    <h1 className="font-semibold text-lg w-full">
+                    <h1 className="font-medium text-black font-poppins text-lg w-full">
                       {user.email}
                     </h1>
                   </div>
@@ -444,7 +444,7 @@ const Project = () => {
             </div>
             <button
               onClick={addCollaborators}
-              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 text-white rounded-md"
+              className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-600 font-poppins text-white rounded-md"
             >
               Add Collaborators
             </button>

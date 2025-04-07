@@ -8,7 +8,6 @@ import projectModel from './models/project.model.js';
 import { join } from 'path';
 import { generateResult } from './services/ai.service.js';
 
-
 const server = http.createServer(app);
 
 const io = new Server(server,{cors: {

@@ -26,50 +26,62 @@ const Register = () => {
       });
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-white mb-6">Register</h2>
-        <form onSubmit={submitHandler}>
-          <div className="mb-4">
-            <label className="block text-gray-400 mb-2" htmlFor="email">
+  return (   
+  <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-black bg-opacity-30"
+      style={{
+      backgroundImage:
+        "url('/bg-image1.jpeg')",
+      }}>
+    <div className="group relative rounded-2xl p-[2px] duration-500 hover:shadow-[0_0_20px_5px_rgba(59,130,246,0.8)]">
+      {/* Inner Card */}  
+      <div className="bg-white bg-opacity-10 backdrop-blur-md rounded-2xl p-7 pt-5 pb-8 max-w-full w-[400px] text-white">
+        <h2 className="text-3xl font-poppins font-semibold mb-4 text-left p-1">Register</h2>
+        <form onSubmit={submitHandler} className="flex flex-col gap-4">
+          <div className="flex flex-col">
+            <label className="mb-1 font-poppins text-lg text-left pl-2" htmlFor="email">
               Email
             </label>
             <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
+             onChange={(e) => setEmail(e.target.value)}
               id="email"
-              className="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="email"
               placeholder="Enter your email"
+              className="p-3 font-poppins text-sm  rounded-xl bg-gray-500 bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-400 mb-2" htmlFor="password">
+
+          <div className="flex flex-col">
+            <label className="mb-1 font-poppins text-lg text-left pl-2" htmlFor="password">
               Password
             </label>
             <input
               onChange={(e) => setPassword(e.target.value)}
-              type="password"
               id="password"
-              className="w-full p-3 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="password"
               placeholder="Enter your password"
+              className="p-3 font-poppins text-sm rounded-xl bg-gray-500 bg-opacity-30 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full p-3 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Register
-          </button>
-        </form>
-        <p className="text-gray-400 mt-4">
+
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="w-[280px] h-[46px] font-poppins text-base bg-blue-600 hover:bg-blue-700 transition-all text-white font-semibold py-3 rounded-full mt-4"
+            >
+              Login
+            </button>
+          </div>
+      </form>
+        <p className="mt-6 text-center font-poppins text-sm">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-300 hover:underline">
             Login
           </Link>
         </p>
       </div>
     </div>
+  </div>
   );
 };
 
